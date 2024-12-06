@@ -10,17 +10,23 @@ import {
 
 import { User } from "./user";
 import { Staff } from "./staff";
-import { AppointmentRequest } from "./appointment-request";
+import { Appointment } from "./appointment";
+
+export enum AppointmentRequestStatus {
+  Pending = "pending",
+  Approved = "approved",
+  Rejected = "rejected",
+}
 
 @Entity()
-export class Appointment {
+export class AppointmentRequest {
   @PrimaryGeneratedColumn()
   id!: number;
 
-  @ManyToOne(() => User, (user) => user.appointments)
+  @ManyToOne(() => User, (user) => user.appointmentRequests)
   user!: User;
 
-  @ManyToOne(() => Staff, (staff) => staff.appointments)
+  @ManyToOne(() => Staff, (staff) => staff.appointmentRequests)
   staff!: Staff;
 
   @Column({
@@ -41,7 +47,15 @@ export class Appointment {
   })
   endTime!: number;
 
-  @OneToOne(() => AppointmentRequest, (request) => request.appointment)
-  @JoinColumn()
-  request!: AppointmentRequest;
+  @Column({
+    type: "varchar",
+    enum: AppointmentRequestStatus,
+    default: AppointmentRequestStatus.Pending,
+  })
+  status!: AppointmentRequestStatus;
+
+  @OneToOne(() => Appointment, (appointment) => appointment.request, {
+    nullable: true,
+  })
+  appointment?: Appointment; // Link to the Appointment entity when created
 }

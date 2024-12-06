@@ -3,9 +3,11 @@ import { DataSource } from "typeorm";
 import config from "../config";
 import { User } from "../entities/user";
 import { Staff } from "../entities/staff";
-import { Appointment } from "../entities/appointment";
+import { Schedule } from "../entities/schedule";
 import { Availability } from "../entities/availability";
 import { Slot } from "../entities/slot";
+import { Appointment } from "../entities/appointment";
+import { AppointmentRequest } from "../entities/appointment-request";
 
 export const AppDataSource = new DataSource({
   type: "postgres",
@@ -16,7 +18,15 @@ export const AppDataSource = new DataSource({
   database: config.database.database,
   synchronize: true,
   logging: false,
-  entities: [User, Staff, Appointment, Availability, Slot],
+  entities: [
+    User,
+    Staff,
+    Appointment,
+    AppointmentRequest,
+    Schedule,
+    Availability,
+    Slot,
+  ],
   subscribers: [],
   migrations: ["src/migrations/**/*.ts"],
 });

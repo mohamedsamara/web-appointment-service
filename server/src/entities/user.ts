@@ -3,12 +3,15 @@ import {
   PrimaryGeneratedColumn,
   Column,
   OneToOne,
+  OneToMany,
   JoinColumn,
 } from "typeorm";
 
 import { Staff } from "./staff";
+import { Appointment } from "./appointment";
+import { AppointmentRequest } from "./appointment-request";
 
-@Entity()
+@Entity("users")
 export class User {
   @PrimaryGeneratedColumn()
   id!: number;
@@ -25,4 +28,10 @@ export class User {
   @OneToOne(() => Staff, (staff) => staff.user)
   @JoinColumn()
   staff?: Staff;
+
+  @OneToMany(() => Appointment, (appointment) => appointment.user)
+  appointments!: Appointment[];
+
+  @OneToMany(() => AppointmentRequest, (request) => request.user)
+  appointmentRequests!: AppointmentRequest[];
 }
