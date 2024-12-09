@@ -1,6 +1,6 @@
 import { createTheme, responsiveFontSizes } from "@mui/material/styles";
 
-import palette from "./palette";
+import palette, { border } from "./palette";
 import typography from "./typography";
 
 const theme = createTheme({
@@ -17,6 +17,38 @@ const theme = createTheme({
               backgroundColor: palette.action?.selected,
             },
           },
+        },
+      },
+    },
+    MuiAppBar: {
+      styleOverrides: {
+        root: {
+          borderBottomWidth: 1,
+          borderBottomStyle: "solid",
+          borderBottomColor: border.primary,
+        },
+      },
+      variants: [
+        {
+          props: { color: "default" },
+          style: {
+            background: palette.background?.paper,
+          },
+        },
+      ],
+    },
+
+    MuiDrawer: {
+      styleOverrides: {
+        paper: {
+          borderColor: border.primary,
+        },
+      },
+    },
+    MuiDivider: {
+      styleOverrides: {
+        root: {
+          borderColor: border.primary,
         },
       },
     },

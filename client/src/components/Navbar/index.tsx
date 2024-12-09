@@ -1,6 +1,8 @@
-import { useState } from "react";
-import { styled, Theme, CSSObject } from "@mui/material/styles";
-import MuiDrawer from "@mui/material/Drawer";
+import { styled } from "@mui/material/styles";
+import Drawer from "@mui/material/Drawer";
+import MuiAppBar, { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
+import Toolbar from "@mui/material/Toolbar";
+import Typography from "@mui/material/Typography";
 import List from "@mui/material/List";
 import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
@@ -9,6 +11,7 @@ import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import HomeIcon from "@mui/icons-material/Home";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 
+import DrawerHeader from "./DrawerHeader";
 import ListItemLink from "./ListItemLink";
 
 const NavItems = [
@@ -24,87 +27,83 @@ const NavItems = [
   },
 ];
 
-const drawerWidth = 240;
+export const DRAWER_WIDTH = 240;
 
-const openedMixin = (theme: Theme): CSSObject => ({
-  width: drawerWidth,
-  transition: theme.transitions.create("width", {
-    easing: theme.transitions.easing.sharp,
-    duration: theme.transitions.duration.enteringScreen,
-  }),
-  overflowX: "hidden",
-});
+interface AppBarProps extends MuiAppBarProps {
+  open?: boolean;
+}
 
-const closedMixin = (theme: Theme): CSSObject => ({
-  transition: theme.transitions.create("width", {
+const AppBar = styled(MuiAppBar, {
+  shouldForwardProp: (prop) => prop !== "open",
+})<AppBarProps>(({ theme }) => ({
+  transition: theme.transitions.create(["margin", "width"], {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.leavingScreen,
   }),
-  overflowX: "hidden",
-  width: `calc(${theme.spacing(7)} + 1px)`,
-  [theme.breakpoints.up("sm")]: {
-    width: `calc(${theme.spacing(8)} + 1px)`,
-  },
-});
-
-const DrawerHeader = styled("div", {
-  shouldForwardProp: (prop) => prop !== "open",
-})<{ open: boolean }>(({ theme, open }) => ({
-  display: "flex",
-  alignItems: "center",
-  padding: theme.spacing(0, 1),
-  ...theme.mixins.toolbar,
-  justifyContent: open ? "flex-end" : "center",
-}));
-
-const Drawer = styled(MuiDrawer, {
-  shouldForwardProp: (prop) => prop !== "open",
-})(({ theme }) => ({
-  width: drawerWidth,
-  flexShrink: 0,
-  whiteSpace: "nowrap",
-  boxSizing: "border-box",
   variants: [
     {
       props: ({ open }) => open,
       style: {
-        ...openedMixin(theme),
-        "& .MuiDrawer-paper": openedMixin(theme),
-      },
-    },
-    {
-      props: ({ open }) => !open,
-      style: {
-        ...closedMixin(theme),
-        "& .MuiDrawer-paper": closedMixin(theme),
+        width: `calc(100% - ${DRAWER_WIDTH}px)`,
+        marginLeft: `${DRAWER_WIDTH}px`,
+        transition: theme.transitions.create(["margin", "width"], {
+          easing: theme.transitions.easing.easeOut,
+          duration: theme.transitions.duration.enteringScreen,
+        }),
       },
     },
   ],
 }));
 
-const Navbar = () => {
-  const [open, setOpen] = useState(false);
-  const handleDrawerOpen = () => setOpen(true);
-  const handleDrawerClose = () => setOpen(false);
-
+const Navbar = ({
+  open,
+  onOpen,
+  onClose,
+}: {
+  open: boolean;
+  onOpen: () => void;
+  onClose: () => void;
+}) => {
   return (
     <>
-      <Drawer variant="permanent" open={open}>
-        <DrawerHeader open={open}>
-          {open ? (
-            <IconButton onClick={handleDrawerClose}>
-              <ChevronLeftIcon />
-            </IconButton>
-          ) : (
-            <IconButton
-              sx={{ justifyContent: "center" }}
-              color="inherit"
-              aria-label="open drawer"
-              onClick={handleDrawerOpen}
-            >
-              <MenuIcon />
-            </IconButton>
-          )}
+      <AppBar position="fixed" color="default" elevation={0} open={open}>
+        <Toolbar>
+          <IconButton
+            color="inherit"
+            aria-label="open drawer"
+            onClick={onOpen}
+            edge="start"
+            sx={[
+              {
+                mr: 2,
+              },
+              open && { display: "none" },
+            ]}
+          >
+            <MenuIcon />
+          </IconButton>
+          <Typography variant="h6" noWrap component="div">
+            LOGO
+          </Typography>
+        </Toolbar>
+      </AppBar>
+      <Drawer
+        sx={{
+          width: DRAWER_WIDTH,
+          flexShrink: 0,
+          "& .MuiDrawer-paper": {
+            width: DRAWER_WIDTH,
+            boxSizing: "border-box",
+          },
+        }}
+        variant="persistent"
+        anchor="left"
+        open={open}
+      >
+        <DrawerHeader>
+          <IconButton onClick={onClose}>
+            <ChevronLeftIcon />
+          </IconButton>
         </DrawerHeader>
         <Divider />
         <List>

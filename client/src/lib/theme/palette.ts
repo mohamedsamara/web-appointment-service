@@ -14,6 +14,11 @@ export const hover = {
   tertiary: grey[50],
 };
 
+export const border = {
+  primary: grey[200],
+  secondary: grey[500],
+};
+
 const palette: PaletteOptions = {
   primary: {
     main: primary,
