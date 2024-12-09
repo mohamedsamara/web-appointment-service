@@ -8,6 +8,7 @@ import theme from "lib/theme";
 const Home = lazy(() => import("pages/Home"));
 import NoMatch from "pages/NoMatch";
 import ErrorBoundary from "./components/ErrorBoundary";
+import Layout from "./components/Layout";
 
 const App = () => {
   return (
@@ -15,17 +16,19 @@ const App = () => {
       <CssBaseline />
       <ErrorBoundary>
         <Router>
-          <Routes>
-            <Route
-              path="/"
-              element={
-                <Suspense>
-                  <Home />
-                </Suspense>
-              }
-            />
-            <Route path="*" element={<NoMatch />} />
-          </Routes>
+          <Layout>
+            <Routes>
+              <Route
+                path="/"
+                element={
+                  <Suspense>
+                    <Home />
+                  </Suspense>
+                }
+              />
+              <Route path="*" element={<NoMatch />} />
+            </Routes>
+          </Layout>
         </Router>
       </ErrorBoundary>
     </ThemeProvider>

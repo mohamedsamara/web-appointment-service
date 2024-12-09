@@ -3,10 +3,16 @@
 import { PaletteOptions } from "@mui/material";
 import { blue, green, red, yellow, grey } from "@mui/material/colors";
 
-const primary = blue[700];
-const secondary = grey[100];
-const disabled = grey[500];
-const white = "#fff";
+export const primary = blue[600];
+export const secondary = grey[100];
+export const disabled = grey[500];
+export const white = "#fff";
+
+export const hover = {
+  primary: blue[50],
+  secondary: grey[500],
+  tertiary: grey[50],
+};
 
 const palette: PaletteOptions = {
   primary: {
@@ -35,6 +41,15 @@ const palette: PaletteOptions = {
     primary: grey[900],
     secondary: grey[700],
     disabled: disabled,
+  },
+  action: {
+    active: grey[600],
+    hover: grey[50],
+    selected: blue[50],
+    focus: grey[100],
+
+    disabled: disabled,
+    disabledBackground: grey[200],
   },
 };
 
