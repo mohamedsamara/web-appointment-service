@@ -27,7 +27,7 @@ const NavItems = [
   },
 ];
 
-export const DRAWER_WIDTH = 240;
+export const DRAWER_WIDTH = 70;
 
 interface AppBarProps extends MuiAppBarProps {
   open?: boolean;

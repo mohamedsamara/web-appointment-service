@@ -3,8 +3,8 @@ import { NavLink as RouterNavLink, NavLinkProps } from "react-router-dom";
 import { SvgIconProps } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import ListItemButton from "@mui/material/ListItemButton";
-import ListItemText from "@mui/material/ListItemText";
 import ListItemIcon from "@mui/material/ListItemIcon";
+import Tooltip from "@mui/material/Tooltip";
 
 type NavItem = {
   route: string;
@@ -40,59 +40,40 @@ const ListItemLink = ({ open, item }: Props) => {
   const NavIcon = icon;
 
   return (
-    <ListItemButton
-      component={NavLink}
-      to={route}
-      sx={[
-        {
-          minHeight: 48,
-          px: 2.5,
-          "&.active": {
-            backgroundColor: (theme) => theme.palette.action.selected,
-            color: (theme) => theme.palette.primary.main,
-          },
-        },
-        open
-          ? {
-              justifyContent: "initial",
-            }
-          : {
-              justifyContent: "center",
-            },
-      ]}
-    >
-      {icon && (
-        <ListItemIcon
-          sx={[
-            {
-              minWidth: 0,
-              justifyContent: "center",
-            },
-            open
-              ? {
-                  mr: 3,
-                }
-              : {
-                  mr: "auto",
-                },
-          ]}
-        >
-          <NavIcon color="primary" />
-        </ListItemIcon>
-      )}
-      <ListItemText
-        primary={name}
+    <Tooltip title={name} key={route} arrow placement={"right"}>
+      <ListItemButton
+        component={NavLink}
+        to={route}
         sx={[
+          {
+            minHeight: 48,
+            px: 2.5,
+            "&.active": {
+              backgroundColor: (theme) => theme.palette.action.selected,
+              color: (theme) => theme.palette.primary.main,
+            },
+          },
           open
             ? {
-                opacity: 1,
+                justifyContent: "initial",
               }
             : {
-                opacity: 0,
+                justifyContent: "center",
               },
         ]}
-      />
-    </ListItemButton>
+      >
+        {icon && (
+          <ListItemIcon
+            sx={{
+              minWidth: 0,
+              justifyContent: "center",
+            }}
+          >
+            <NavIcon color="primary" />
+          </ListItemIcon>
+        )}
+      </ListItemButton>
+    </Tooltip>
   );
 };
 
