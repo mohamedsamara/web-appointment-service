@@ -7,8 +7,9 @@ import theme from "lib/theme";
 
 const Home = lazy(() => import("pages/Home"));
 import NoMatch from "pages/NoMatch";
-import ErrorBoundary from "./components/ErrorBoundary";
-import Layout from "./components/Layout";
+import Schedule from "pages/Schedule";
+import ErrorBoundary from "components/ErrorBoundary";
+import { DefaultLayout, ScheduleLayout } from "components/Layouts";
 
 const App = () => {
   return (
@@ -16,7 +17,7 @@ const App = () => {
       <CssBaseline />
       <ErrorBoundary>
         <Router>
-          <Layout>
+          <DefaultLayout>
             <Routes>
               <Route
                 path="/"
@@ -26,9 +27,13 @@ const App = () => {
                   </Suspense>
                 }
               />
+              <Route path="/schedule" element={<ScheduleLayout />}>
+                <Route index element={<Schedule />} />
+                <Route path="test" element={<div>TEST</div>} />
+              </Route>
               <Route path="*" element={<NoMatch />} />
             </Routes>
-          </Layout>
+          </DefaultLayout>
         </Router>
       </ErrorBoundary>
     </ThemeProvider>

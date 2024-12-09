@@ -100,7 +100,7 @@ const Navbar = ({
         anchor="left"
         open={open}
       >
-        <DrawerHeader>
+        <DrawerHeader sx={{ justifyContent: "center" }}>
           <IconButton onClick={onClose}>
             <ChevronLeftIcon />
           </IconButton>

@@ -2,14 +2,13 @@ import { useState, PropsWithChildren } from "react";
 import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 
-import DrawerHeader from "../Navbar/DrawerHeader";
+import DrawerHeader from "components/Navbar/DrawerHeader";
 import Navbar, { DRAWER_WIDTH } from "../Navbar";
 
 const Main = styled("main", { shouldForwardProp: (prop) => prop !== "open" })<{
   open?: boolean;
 }>(({ theme }) => ({
   flexGrow: 1,
-  padding: theme.spacing(3),
   transition: theme.transitions.create("margin", {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.leavingScreen,
@@ -29,11 +28,9 @@ const Main = styled("main", { shouldForwardProp: (prop) => prop !== "open" })<{
   ],
 }));
 
-const Layout = ({ children }: PropsWithChildren) => {
+const DefaultLayout = ({ children }: PropsWithChildren) => {
   const [open, setOpen] = useState(false);
-
   const handleDrawerOpen = () => setOpen(true);
-
   const handleDrawerClose = () => setOpen(false);
 
   return (
@@ -45,10 +42,22 @@ const Layout = ({ children }: PropsWithChildren) => {
       />
       <Main open={open}>
         <DrawerHeader />
-        {children}
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            overflowY: "scroll",
+            height: {
+              xs: `calc(env(safe-area-inset-top) + 100vh - 56px)`,
+              sm: `calc(env(safe-area-inset-top) + 100vh - 64px)`,
+            },
+          }}
+        >
+          {children}
+        </Box>
       </Main>
     </Box>
   );
 };
 
-export default Layout;
+export default DefaultLayout;
