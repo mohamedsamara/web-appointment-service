@@ -29,7 +29,11 @@ const App = () => {
               />
               <Route path="/schedule" element={<ScheduleLayout />}>
                 <Route index element={<Schedule />} />
-                <Route path="test" element={<div>TEST</div>} />
+                <Route
+                  path="appointment-requests"
+                  element={<div>appointment requests</div>}
+                />
+                <Route path="availability" element={<div>availability</div>} />
               </Route>
               <Route path="*" element={<NoMatch />} />
             </Routes>

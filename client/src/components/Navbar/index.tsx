@@ -3,7 +3,6 @@ import Drawer from "@mui/material/Drawer";
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
-import List from "@mui/material/List";
 import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
@@ -12,9 +11,9 @@ import HomeIcon from "@mui/icons-material/Home";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 
 import DrawerHeader from "./DrawerHeader";
-import ListItemLink from "./ListItemLink";
+import { NavList, NavListItem } from "../Navigation";
 
-const NavItems = [
+const NAV_ITEMS = [
   {
     route: "/",
     name: "Home",
@@ -94,6 +93,7 @@ const Navbar = ({
           "& .MuiDrawer-paper": {
             width: DRAWER_WIDTH,
             boxSizing: "border-box",
+            boxShadow: "none",
           },
         }}
         variant="persistent"
@@ -106,11 +106,11 @@ const Navbar = ({
           </IconButton>
         </DrawerHeader>
         <Divider />
-        <List>
-          {NavItems.map((item, idx) => (
-            <ListItemLink key={idx} open={open} item={item} />
+        <NavList>
+          {NAV_ITEMS.map((item, idx) => (
+            <NavListItem key={idx} item={item} tooltip />
           ))}
-        </List>
+        </NavList>
       </Drawer>
     </>
   );

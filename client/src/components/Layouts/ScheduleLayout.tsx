@@ -1,51 +1,55 @@
-import { Outlet } from "react-router-dom";
+import { useNavigate, Outlet } from "react-router-dom";
+
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import Grid from "@mui/material/Grid2";
 import Box from "@mui/material/Box";
 import BottomNavigation from "@mui/material/BottomNavigation";
 import BottomNavigationAction from "@mui/material/BottomNavigationAction";
-import RestoreIcon from "@mui/icons-material/Restore";
-import FavoriteIcon from "@mui/icons-material/Favorite";
-import LocationOnIcon from "@mui/icons-material/LocationOn";
+import EventIcon from "@mui/icons-material/Event";
+import ScheduleIcon from "@mui/icons-material/Schedule";
+import EditCalendarIcon from "@mui/icons-material/EditCalendar";
+import { NavList, NavListItem } from "../Navigation";
+import { PaperBackground } from "../Backgrounds";
+import { ReactNode, useState } from "react";
 
 const ScheduleLayout = () => {
+  const navigate = useNavigate();
   const theme = useTheme();
-  const matches = useMediaQuery(theme.breakpoints.up("md"));
+  const matches = useMediaQuery(theme.breakpoints.up("lg"));
+  const [value, setValue] = useState("recents");
 
   if (matches) {
     return (
-      <Box sx={{ overflowY: "hidden" }}>
-        <Grid
-          container
-          spacing={2}
+      <Box
+        sx={{
+          display: "flex",
+          overflowY: "hidden",
+          height: {
+            xs: `calc(env(safe-area-inset-top) + 100vh - 56px)`,
+            sm: `calc(env(safe-area-inset-top) + 100vh - 64px)`,
+          },
+        }}
+      >
+        <Box
+          component="aside"
           sx={{
-            height: {
-              xs: `calc(env(safe-area-inset-top) + 100vh - 56px)`,
-              sm: `calc(env(safe-area-inset-top) + 100vh - 64px)`,
-            },
+            paddingLeft: 3,
+            paddingTop: 3,
+            flexBasis: 300,
           }}
         >
-          <Grid
-            component="aside"
-            size={{ xs: 12, md: 3 }}
-            sx={{
-              padding: 3,
-            }}
-          >
-            Navlinks
-          </Grid>
-          <Grid
-            component="section"
-            size={{ xs: 12, md: 9 }}
-            sx={{
-              height: "100%",
-              overflowY: "scroll",
-            }}
-          >
-            <Outlet />
-          </Grid>
-        </Grid>
+          <NavLinks />
+        </Box>
+        <Box
+          component="section"
+          sx={{
+            flexGrow: 1,
+            height: "100%",
+            overflowY: "scroll",
+          }}
+        >
+          <Outlet />
+        </Box>
       </Box>
     );
   }
@@ -70,15 +74,22 @@ const ScheduleLayout = () => {
       </Box>
       <Box sx={{ flexShrink: 0 }}>
         <BottomNavigation
-          showLabels
-          //   value={value}
-          //   onChange={(event, newValue) => {
-          //     setValue(newValue);
-          //   }}
+          value={value}
+          onChange={(_, newValue) => {
+            setValue(newValue);
+            navigate(NAV_ITEMS[newValue].route);
+          }}
         >
-          <BottomNavigationAction label="Recents" icon={<RestoreIcon />} />
-          <BottomNavigationAction label="Favorites" icon={<FavoriteIcon />} />
-          <BottomNavigationAction label="Nearby" icon={<LocationOnIcon />} />
+          {NAV_ITEMS.map((item) => {
+            const NavIcon = item.icon;
+            return (
+              <BottomNavigationAction
+                key={item.route}
+                label={item.name}
+                icon={(<NavIcon />) as ReactNode}
+              />
+            );
+          })}
         </BottomNavigation>
       </Box>
     </Box>
@@ -86,3 +97,34 @@ const ScheduleLayout = () => {
 };
 
 export default ScheduleLayout;
+
+const NAV_ITEMS = [
+  {
+    route: "/schedule",
+    name: "Schedule",
+    end: true,
+    icon: EventIcon,
+  },
+  {
+    route: "/schedule/appointment-requests",
+    name: "Appointment Requests",
+    icon: ScheduleIcon,
+  },
+  {
+    route: "/schedule/availability",
+    name: "Availability",
+    icon: EditCalendarIcon,
+  },
+];
+
+const NavLinks = () => {
+  return (
+    <PaperBackground>
+      <NavList>
+        {NAV_ITEMS.map((item, idx) => (
+          <NavListItem key={idx} item={item} />
+        ))}
+      </NavList>
+    </PaperBackground>
+  );
+};

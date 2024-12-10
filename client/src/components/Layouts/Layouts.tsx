@@ -1,6 +1,7 @@
 import { PropsWithChildren } from "react";
 import Container, { ContainerProps } from "@mui/material/Container";
 import Box, { BoxProps } from "@mui/material/Box";
+import { PaperBackground } from "../Backgrounds";
 
 type ContentLayoutProps = PropsWithChildren & ContainerProps;
 
@@ -13,12 +14,12 @@ export const ContentLayout = ({
     <Container
       maxWidth="xl"
       sx={{
-        paddingTop: 3,
+        paddingY: 3,
         ...sx,
       }}
       {...rest}
     >
-      {children}
+      <PaperBackground sx={{ padding: 3 }}>{children}</PaperBackground>
     </Container>
   );
 };
